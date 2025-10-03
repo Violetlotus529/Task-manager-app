@@ -1,2 +1,11 @@
 <h1>Tasks#show</h1>
-<p>Find me in app/views/tasks/show.html.erb</p>
+<p>Find me in app/views/tasks/show.html.erb</p>     
+
+<%= @task.title %>
+<div class= "task-show-item">
+    <%= @task.content %>
+    <div class = "task-time">
+        <%= @task.created_at%>
+    </div>
+    <%= link_to("Edit","/tasks/#{@task.id}/edit") %>
+</div>

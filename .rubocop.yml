@@ -1,0 +1,54 @@
+# RuboCop configuration for Rails application
+
+AllCops:
+  # Enable new cops by default
+  NewCops: enable
+  TargetRubyVersion: 3.2.2
+  Exclude:
+    - 'vendor/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'bin/**/*'
+    - 'log/**/*'
+    - 'tmp/**/*'
+    - 'storage/**/*'
+    - 'public/**/*'
+    - 'node_modules/**/*'
+
+# Rails-specific configuration
+plugins:
+  - rubocop-rails
+
+# Common Rails exemptions
+Style/Documentation:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/ClassLength:
+  Max: 150
+
+Metrics/AbcSize:
+  Max: 20
+
+# Rails-specific configurations
+Rails:
+  Enabled: true
+
+# Allow longer blocks in tests and specs
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'
+    - 'spec/**/*'
+    - 'config/routes.rb'
+    - 'Rakefile'
+    - 'config.ru'
+    - '**/*.gemspec'
+
+# Allow single line method definitions
+Style/SingleLineMethods:
+  AllowIfMethodIsEmpty: true

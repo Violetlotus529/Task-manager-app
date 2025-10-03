@@ -7,10 +7,33 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <% if flash.any? %>
+      <div class="flash-message">
+        <% flash.each do |type, message| %>
+          <% case type.to_s %>
+          <% when 'notice' %>
+            <div class="notice-message">
+              <%= message %>
+            </div>
+          <% when 'alert' %>
+            <div class="error-message">
+              <%= message %>
+            </div>
+          <% when 'success' %>
+            <div class="success-message">
+              <%= message %>
+            </div>
+          <% else %>
+            <div class="notice-message">
+              <%= message %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>                  
     <%= yield %>
   </body>
 </html>

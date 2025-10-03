@@ -1,0 +1,8 @@
+<div class="error-container">
+  <h1>ページが見つかりません</h1>
+  <p>お探しのタスクは存在しないか、削除された可能性があります。</p>
+  <div class="error-actions">
+    <%= link_to "タスク一覧にもどる", tasks_path, class: "btn-primary" %>
+    <%= link_to "新しいタスクを作成", new_task_path, class: "btn-secondary" %>
+  </div>
+</div>

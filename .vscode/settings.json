@@ -1,0 +1,57 @@
+{
+    // ============================================
+    // 手打ち学習モード: コード予測機能を無効化
+    // ============================================
+    
+    // 📝 クイック提案を完全に無効化
+    "editor.quickSuggestions": {
+        "other": false,      // 通常のテキスト補完を無効
+        "comments": false,   // コメント内の補完を無効  
+        "strings": false     // 文字列内の補完を無効
+    },
+    
+    // 🚫 各種提案機能を無効化
+    "editor.suggestOnTriggerCharacters": false,  // ドット、括弧等での自動提案を無効
+    "editor.acceptSuggestionOnCommitCharacter": false,  // 特殊文字での自動受け入れを無効
+    "editor.acceptSuggestionOnEnter": "off",  // Enterでの提案受け入れを無効
+    "editor.wordBasedSuggestions": "off",  // 単語ベース提案を無効
+    "editor.suggest.showWords": false,  // 単語提案を無効
+    "editor.suggest.showSnippets": false,  // スニペット提案を無効
+    "editor.suggest.showMethods": false,  // メソッド提案を無効
+    "editor.suggest.showProperties": false,  // プロパティ提案を無効
+    "editor.suggest.showVariables": false,  // 変数提案を無効
+    "editor.suggest.showClasses": false,  // クラス提案を無効
+    "editor.suggest.showFunctions": false,  // 関数提案を無効
+    "editor.suggest.showKeywords": false,  // キーワード提案を無効
+    
+    // 🎯 手打ち学習に役立つ機能は維持
+    "editor.bracketPairColorization.enabled": true,  // 括弧の色分け（構文理解に有効）
+    "editor.showFoldingControls": "always",  // コード折りたたみ表示
+    "editor.lineNumbers": "on",  // 行番号表示
+    "editor.rulers": [80, 120],  // コードの長さガイド
+    "editor.renderWhitespace": "boundary",  // 空白の可視化
+    
+    // 🔍 エラー表示は学習に重要なので維持
+    "ruby.intellisense": false,  // Ruby用IntelliSense無効
+    "ruby.codeCompletion": false,  // Rubyコード補完無効
+    
+    // 📋 Solargraph（Ruby言語サーバー）の提案も無効化
+    "solargraph.completion": false,
+    "solargraph.hover": false,
+    "solargraph.diagnostics": true,  // エラー診断は維持（学習に重要）
+    
+    // 🚫 編集提案機能を無効化
+    "editor.suggest.preview": false,  // 提案プレビューを無効
+    "editor.inlineSuggest.enabled": false,  // インライン提案を無効（GitHub Copilot等）
+    "editor.quickFixOnSave": [],  // 保存時の自動修正を無効
+    "editor.codeActionsOnSave": {},  // 保存時のコードアクションを無効
+    "editor.lightbulb.enabled": "off",  // 電球アイコン（クイックフィックス提案）を無効
+    "editor.suggest.filterGraceful": false,  // 寛容なフィルタリングを無効
+    "editor.suggest.localityBonus": false,  // ローカルファイル優遇を無効
+    "editor.suggest.shareSuggestSelections": false,  // 提案選択の共有を無効
+    "editor.parameterHints.enabled": false,  // パラメータヒントを無効
+    "editor.hover.enabled": false,  // ホバー情報を無効
+    
+    // 💬 手打ち学習期間中のメッセージ
+    "workbench.startupEditor": "welcomePage"
+}
