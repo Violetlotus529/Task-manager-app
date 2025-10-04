@@ -25,7 +25,7 @@ class TasksController < ApplicationController
     if @task.save
       redirect_to @task, notice: 'タスクを正常に保存できました'
     else
-      flash.now[:aleart] = 'エラーが発生しました。'
+      flash.now[:alert] = 'エラーが発生しました。'
       render :new
     end
   end
@@ -35,6 +35,7 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       redirect_to @task, notice: 'Task was successfully updated.'
     else
+      flash.now[:alert] = '更新に失敗しました。入力内容を確認してください。'
       render :edit
     end
   rescue ActiveRecord::RecordNotFound

@@ -335,3 +335,14 @@ application.cssにエラーページ用CSS追加
 存在しないIDでテスト（/tasks/99999）
 
 
+VS Code下部のターミナルパネル確認（zsh表示）
+pwdで現在位置確認（/Users/ren/app_name）
+git statusと入力してEnter
+Git動作確認完了
+以降はターミナルでgitコマンド実行
+git commit -m "メッセージ"を入力してEnter
+成功メッセージが表示される
+git log --onelineで確認
+git notes add -m "詳細メモ"で追加情報
+学習記録のGit移行完了！
+
