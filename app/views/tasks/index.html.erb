@@ -1,6 +1,25 @@
 <div class="index-container">
   <h1>タスク一覧</h1>
   
+  <div class="search-container">
+    <%= form_with url: tasks_path, method: :get, local: :true, class: "search-form" do |form| %>
+      <%= form.text_field :search,
+          placeholder: "タスクを検索...",
+          value: params[:search],
+          class: "search-input" %>
+      <%= form.submit "検索", class: "btn btn-search" %>
+      <% if params[:search].present? %>
+        <%= link_to "クリア", tasks_path, class: "btn btn-clear" %>
+      <% end %>
+    <% end %>
+
+    <% if params[:search].present? %>
+      <p class="search-results">
+        「<%= params[:search] %>」の検索結果: <%= @tasks.count %>件
+      </p>
+    <% end %>
+  </div>
+
   <div class="actions-bar">
     <%= link_to "新しいタスクを作成", "/tasks/new", class: "btn btn-primary" %>
   </div>

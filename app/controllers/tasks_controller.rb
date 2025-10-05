@@ -2,7 +2,15 @@
 
 class TasksController < ApplicationController
   def index
-    @tasks = Task.all.order(created_at: :desc)
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @tasks = Task.where(
+        'title LIKE ? OR content LIKE ?',
+        search_term, search_term
+      ).order(created_at: :desc)
+    else
+      @tasks = Task.all.order(created_at: :desc)
+    end
   end
 
   def show
