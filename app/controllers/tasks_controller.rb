@@ -7,8 +7,16 @@ class TasksController < ApplicationController
       @tasks = Task.where(
         'title LIKE ? OR content LIKE ?',
         search_term, search_term
-      ).order(created_at: :desc)
-    else
+      )
+    end
+    case params[:filter]
+    when 'today'
+      @tasks = @tasks.where(deadline: Date.current)
+    when 'this_week'
+      @tasks = @tasks.where(deadline: Date.current.beginning_of_week..Date.current.end_of_week)
+    when 'overdue'
+      @tasks = @tasks.where('deadline < ?', Date.current)
+    end
       @tasks = Task.all.order(created_at: :desc)
     end
   end

@@ -19,7 +19,12 @@
       </p>
     <% end %>
   </div>
-
+  <div class="filter-buttons">
+    <%= link_to "全て", tasks_path, class: "btn #{'active' if params[:filter].black?}" %>
+    <%= link_to "今日", tasks_path(filter: 'today'), class: "btn #{'active' if params[:filter] == 'today'}" %>
+    <%= link_to "今週", tasks_path(filter: 'this_week'), class: "btn #{'active' if params[:filter] == 'this_week'}" %>
+    <%= link_to "期限切れ", tasks_path(filter: 'overdue'), class: "btn btn-danger #{'active' if params[:filter] == 'overdue'}" %>
+  </div>
   <div class="actions-bar">
     <%= link_to "新しいタスクを作成", "/tasks/new", class: "btn btn-primary" %>
   </div>
