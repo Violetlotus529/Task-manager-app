@@ -2,9 +2,10 @@
 
 class TasksController < ApplicationController
   def index
+    @tasks = Task.all
     if params[:search].present?
       search_term = "%#{params[:search]}%"
-      @tasks = Task.where(
+      @tasks = @tasks.where(
         'title LIKE ? OR content LIKE ?',
         search_term, search_term
       )
@@ -13,12 +14,18 @@ class TasksController < ApplicationController
     when 'today'
       @tasks = @tasks.where(deadline: Date.current)
     when 'this_week'
-      @tasks = @tasks.where(deadline: Date.current.beginning_of_week..Date.current.end_of_week)
+      start_date = Date.current.beginning_of_week
+      end_date = Date.current.end_of_week
+      @tasks = @tasks.where(deadline: start_date..end_date)
     when 'overdue'
       @tasks = @tasks.where('deadline < ?', Date.current)
+    when 'completed'
+      @tasks = @tasks.where(completed: true)
+    when 'incomplete'
+      @tasks = @tasks.where(completed: [false, nil])
     end
-      @tasks = Task.all.order(created_at: :desc)
-    end
+
+    @tasks = @tasks.order(created_at: :desc)
   end
 
   def show
@@ -71,6 +78,6 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:title, :content, :deadline)
+    params.require(:task).permit(:title, :content, :deadline, :completed)
   end
 end

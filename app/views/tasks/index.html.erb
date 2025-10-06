@@ -20,10 +20,12 @@
     <% end %>
   </div>
   <div class="filter-buttons">
-    <%= link_to "全て", tasks_path, class: "btn #{'active' if params[:filter].black?}" %>
+    <%= link_to "全て", tasks_path, class: "btn #{'active' if params[:filter].blank?}" %>
     <%= link_to "今日", tasks_path(filter: 'today'), class: "btn #{'active' if params[:filter] == 'today'}" %>
     <%= link_to "今週", tasks_path(filter: 'this_week'), class: "btn #{'active' if params[:filter] == 'this_week'}" %>
     <%= link_to "期限切れ", tasks_path(filter: 'overdue'), class: "btn btn-danger #{'active' if params[:filter] == 'overdue'}" %>
+    <%= link_to "完了", tasks_path(filter: 'completed'), class: "btn btn-success #{'active' if params[:filter] == 'completed'}" %>
+    <%= link_to "未完了", tasks_path(filter: 'incomplete'), class: "btn btn-warning #{'active' if params[:filter] == 'incomplete'}" %>
   </div>
   <div class="actions-bar">
     <%= link_to "新しいタスクを作成", "/tasks/new", class: "btn btn-primary" %>
@@ -49,6 +51,13 @@
               期限: <%= task.deadline.strftime('%Y年%m月%d日') %>
             </div>
           <% end %>
+          <div class="task-status">
+            <% if task.completed %>
+              ✅ 完了
+            <% else %>
+              ⏳ 未完了
+            <% end %>
+          </div>
           <div class="task-actions">
             <%= link_to "表示", "/tasks/#{task.id}", class: "btn btn-outline" %>
             <%= link_to "編集", "/tasks/#{task.id}/edit", class: "btn btn-secondary" %>

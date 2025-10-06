@@ -6,4 +6,6 @@ class Task < ApplicationRecord
   validates :content, presence: { message: 'を入力してください' }
   validates :content, length: { maximum: 1000 }
   validates :deadline, presence: { message: 'を選択してください' }
+  scope :completed, -> { where(completed: true) }
+  scope :incomplated, -> { where(completed: false) }
 end

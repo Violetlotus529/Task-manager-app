@@ -33,6 +33,9 @@
        <label for="deadline">期限:</label>
        <input type="date" name="task[deadline]" value="<%= @task.deadline&.strftime('%Y-%m-%d') %>" class="form-input">
      </div>
+     <div class="form-group">
+       <%= check_box_tag "task[completed]", "1", @task&.completed %>
+       <%= label_tag "task[completed]", "完了" %>
 
      <div class="form-actions">
        <input type="submit" value="Create Task" class="btn btn-primary">
