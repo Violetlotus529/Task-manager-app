@@ -52,10 +52,13 @@
             </div>
           <% end %>
           <div class="task-status">
-            <% if task.completed %>
+            <% case task.status %>
+            <% when 'not_started' %>
+              📋 未着手
+            <% when 'in_progress' %>
+              🔄 進行中
+            <% when 'completed' %>
               ✅ 完了
-            <% else %>
-              ⏳ 未完了
             <% end %>
           </div>
           <div class="task-actions">
