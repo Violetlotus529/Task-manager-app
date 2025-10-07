@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:toggle_completed]
   def index
     @tasks = Task.all
     if params[:search].present?
@@ -73,6 +74,15 @@ class TasksController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = '削除しようとしたタスクが見つかりません'
     redirect_to task_path
+  end
+
+  def toggle_completed
+    @task = Task.find(params[:id])
+    @task.update(completed: !@task.completed)
+    redirect_to tasks_path
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = 'タスクが見つかりません'
+    redirect_to tasks_path
   end
 
   private

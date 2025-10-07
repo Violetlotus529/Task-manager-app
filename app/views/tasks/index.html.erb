@@ -39,7 +39,7 @@
           is_overdue = task.deadline && task.deadline < today
           is_due_today = task.deadline && task.deadline == today
         %>
-        <div class="task-index-item <%= 'overdue' if is_overdue %> <%= 'due-today' if is_due_today %>">
+        <div class="task-index-item <%= 'overdue' if is_overdue %> <%= 'due-today' if is_due_today %> <%= 'completed' if task.completed? %>">
           <div class="task-title">
             <%= link_to task.title, "/tasks/#{task.id}" %>
           </div>
@@ -61,6 +61,10 @@
           <div class="task-actions">
             <%= link_to "表示", "/tasks/#{task.id}", class: "btn btn-outline" %>
             <%= link_to "編集", "/tasks/#{task.id}/edit", class: "btn btn-secondary" %>
+            <%= form_with url: toggle_completed_task_path(task), method: :path, local: true, style: "display: inline-block; margin: 0;" do %>
+              <%= submit_tag (task.completed? ? "未完了にする" : "完了にする"),
+                class: "btn #{task.completed? ? 'btn-warning' : 'btn-success'}" %>
+              <% end %>
             <%= button_to "削除", "/tasks/#{task.id}", method: :delete, 
                 onclick: "return confirm('本当に削除しますか？')", class: "btn btn-danger" %>
           </div>

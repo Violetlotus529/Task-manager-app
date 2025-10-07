@@ -338,6 +338,26 @@ li {
   font-weight: bold;
 }
 
+.task-index-item.completed {
+  opacity: 0.6;
+  background-color: #f8f9fa;
+  border-left-color: #6c757d;
+}
+
+.task-index-item.completed .task-title a {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+.task-index-item.completed .task-content {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+.task-index-item.completed .task-deadline {
+  color: #adb5db;
+}
+
 .search-container {
   margin-bottom: 20px;
   padding: 15px;
