@@ -85,6 +85,22 @@ class TasksController < ApplicationController
     redirect_to tasks_path
   end
 
+  def toggle_status
+    @task = Task.find(params[:id])
+    case @task.status
+    when 'not_started'
+      @task.in_progress!
+    when 'in_progress'
+      @task.completed!
+    when 'completed'
+      @task.not_started!
+    end
+    redirect_to tasks_path
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = 'タスクが見つかりません'
+    redirect_to tasks_path
+  end
+
   private
 
   def task_params

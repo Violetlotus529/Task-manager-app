@@ -64,10 +64,17 @@
           <div class="task-actions">
             <%= link_to "表示", "/tasks/#{task.id}", class: "btn btn-outline" %>
             <%= link_to "編集", "/tasks/#{task.id}/edit", class: "btn btn-secondary" %>
-            <%= form_with url: toggle_completed_task_path(task), method: :path, local: true, style: "display: inline-block; margin: 0;" do %>
-              <%= submit_tag (task.completed? ? "未完了にする" : "完了にする"),
-                class: "btn #{task.completed? ? 'btn-warning' : 'btn-success'}" %>
-              <% end %>
+            <%= link_to case task.status
+                        when 'not_started' then "進行中にする"
+                        when 'in_progress' then "未完了にする"
+                        when 'completed' then "未着手に戻す"
+                        end,
+                 toggle_status_task_path(task),
+                 class: "btn #{case task.status
+                               when 'not_started' then 'btn-primary'
+                               when 'in_progress' then 'btn-success'
+                               when 'completed' then 'btn-warning'
+                               end}" %>
             <%= button_to "削除", "/tasks/#{task.id}", method: :delete, 
                 onclick: "return confirm('本当に削除しますか？')", class: "btn btn-danger" %>
           </div>
