@@ -20,11 +20,9 @@ class TasksController < ApplicationController
       @tasks = @tasks.where(deadline: start_date..end_date)
     when 'overdue'
       @tasks = @tasks.where('deadline < ?', Date.current)
-    when 'completed'
-      @tasks = @tasks.where(status: 'completed')
-    when 'incomplete'
-      @tasks = @tasks.where(status: %w[not_started in_progress])
     end
+    @tasks = @tasks.where(status: params[:status]) if params[:status].present?
+    @tasks = @tasks.where(priority: params[:priority]) if params[:priority].present?
 
     @tasks = @tasks.order(created_at: :desc)
   end
@@ -104,6 +102,6 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:title, :content, :deadline, :status)
+    params.require(:task).permit(:title, :content, :deadline, :status, :priority)
   end
 end

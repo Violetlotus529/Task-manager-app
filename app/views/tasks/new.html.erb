@@ -33,6 +33,18 @@
        <label for="deadline">期限:</label>
        <input type="date" name="task[deadline]" value="<%= @task.deadline&.strftime('%Y-%m-%d') %>" class="form-input">
      </div>
+
+     <div class="form-group">
+      <%= label_tag "task[priority]", "優先度:" %>
+      <%= select_tag "task[priority]",
+          options_for_select([
+            ['低', 'low'],
+            ['中', 'medium'],
+            ['高', 'high']
+          ], @task&.priority),
+          class: "form-input" %>
+     </div>
+
      <div class="form-group">
        <%= label_tag "task[status]", "進捗状況:" %>
        <%= select_tag "task[status]",

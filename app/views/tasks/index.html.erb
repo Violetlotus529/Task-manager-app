@@ -24,8 +24,13 @@
     <%= link_to "今日", tasks_path(filter: 'today'), class: "btn #{'active' if params[:filter] == 'today'}" %>
     <%= link_to "今週", tasks_path(filter: 'this_week'), class: "btn #{'active' if params[:filter] == 'this_week'}" %>
     <%= link_to "期限切れ", tasks_path(filter: 'overdue'), class: "btn btn-danger #{'active' if params[:filter] == 'overdue'}" %>
-    <%= link_to "完了", tasks_path(filter: 'completed'), class: "btn btn-success #{'active' if params[:filter] == 'completed'}" %>
-    <%= link_to "未完了", tasks_path(filter: 'incomplete'), class: "btn btn-warning #{'active' if params[:filter] == 'incomplete'}" %>
+    <%= link_to "未着手", tasks_path(status: 'not_started'), class: "btn btn-secondary #{'active' if params[:status] == 'not_started'}" %>
+    <%= link_to "進行中", tasks_path(status: 'in_progress'), class: "btn btn-warning #{'active' if params[:status] == 'in_progress'}" %>
+    <%= link_to "完了", tasks_path(status: 'completed'), class: "btn btn-success #{'active' if params[:status] == 'completed'}" %>
+    <%= link_to "高", tasks_path(priority: 'high'), class: "btn btn-danger #{'active' if params[:priority] == 'high'}" %>
+    <%= link_to "中", tasks_path(priority: 'medium'), class: "btn btn-warning #{'active' if params[:priority] == 'medium'}" %>
+    <%= link_to "低", tasks_path(priority: 'low'), class: "btn btn-secondary #{'active' if params[:priority] == 'low'}" %>
+
   </div>
   <div class="actions-bar">
     <%= link_to "新しいタスクを作成", "/tasks/new", class: "btn btn-primary" %>
@@ -59,6 +64,16 @@
               🔄 進行中
             <% when 'completed' %>
               ✅ 完了
+            <% end %>
+          </div>
+          <div class="task-priority">
+            <% case task.priority %>
+            <% when 'high' %>
+              🔴 高優先度
+            <% when 'medium' %>
+              🟡 中優先度
+            <% when 'low' %>
+              🟢 低優先度
             <% end %>
           </div>
           <div class="task-actions">

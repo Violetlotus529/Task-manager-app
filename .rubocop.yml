@@ -39,6 +39,10 @@ Metrics/AbcSize:
 Rails:
   Enabled: true
 
+# Disable enum syntax warnings for Rails 7.1 compatibility
+Rails/EnumSyntax:
+  Enabled: false
+
 # Allow longer blocks in tests and specs
 Metrics/BlockLength:
   Exclude:

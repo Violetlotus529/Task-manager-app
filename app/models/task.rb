@@ -6,11 +6,8 @@ class Task < ApplicationRecord
   validates :content, presence: { message: 'を入力してください' }
   validates :content, length: { maximum: 1000 }
   validates :deadline, presence: { message: 'を選択してください' }
-  enum :status, {
-    not_started: 0,
-    in_progress: 1,
-    completed: 2
-  }
-  scope :completed, -> { where(completed: true) }
-  scope :incomplated, -> { where(completed: false) }
+
+  # Rails 7.1 enum syntax
+  enum status: { not_started: 0, in_progress: 1, completed: 2 }
+  enum priority: { low: 0, medium: 1, high: 2 }
 end
