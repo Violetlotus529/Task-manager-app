@@ -23,8 +23,15 @@ class TasksController < ApplicationController
     end
     @tasks = @tasks.where(status: params[:status]) if params[:status].present?
     @tasks = @tasks.where(priority: params[:priority]) if params[:priority].present?
-
-    @tasks = @tasks.order(created_at: :desc)
+    @tasks = case params[:sort]
+             when 'deadline'
+               @tasks.order(:deadline)
+             when 'priority'
+               @tasks.order(priority: :desc)
+             else
+               @tasks.order(created_at: :desc)
+             end
+    @tasks = @tasks.page(params[:page]).per(5)
   end
 
   def show
