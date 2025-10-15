@@ -92,7 +92,7 @@
                                when 'in_progress' then 'btn-success'
                                when 'completed' then 'btn-warning'
                                end}" %>
-            <%= button_to "削除", "/tasks/#{task.id}", method: :delete, 
+            <%= button_to "削除 <i class='fa-solid fa-trash'></i>".html_safe, "/tasks/#{task.id}", method: :delete, 
                 onclick: "return confirm('本当に削除しますか？')", class: "btn btn-danger" %>
           </div>
         </div>
