@@ -16,6 +16,9 @@ body {
   margin: 0;
   padding: 20px;
   background-color: #f8f9fa;
+  background-image: url('/images/annie-spratt-yI3weKNBRTc-unsplash.jpg');
+  background-size: cover;
+  background-position: center;
   color: #333;
   line-height: 1.6;
 }
@@ -451,7 +454,10 @@ li {
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #0b0b0b;
+    background-color: #000000;
+    background-image: url('/images/annie-spratt-6a3nqQ1YwBw-unsplash.jpg');
+    background-size: cover;
+    background-position: center;
     color: #e0e0e0;
   }
   .form-container, .edit-container, .task-index-item, .empty-state, .error-container {

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       patch :toggle_completed
       post :toggle_completed
       get :toggle_status
+      get :confirm_delete
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

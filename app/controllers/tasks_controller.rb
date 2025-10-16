@@ -108,6 +108,14 @@ class TasksController < ApplicationController
     redirect_to tasks_path
   end
 
+  # GET /tasks/:id/confirm_delete
+  def confirm_delete
+    @task = Task.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = 'タスクが見つかりません'
+    redirect_to tasks_path
+  end
+
   private
 
   def task_params

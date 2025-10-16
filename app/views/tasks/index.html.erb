@@ -92,8 +92,7 @@
                                when 'in_progress' then 'btn-success'
                                when 'completed' then 'btn-warning'
                                end}" %>
-            <%= button_to "削除 <i class='fa-solid fa-trash'></i>".html_safe, "/tasks/#{task.id}", method: :delete, 
-                onclick: "return confirm('本当に削除しますか？')", class: "btn btn-danger" %>
+      <%= link_to "削除 <i class='fa-solid fa-trash'></i>".html_safe, confirm_delete_task_path(task), class: "btn btn-danger" %>
           </div>
         </div>
       <% end %>
@@ -104,5 +103,4 @@
       <%= link_to "最初のタスクを作成", "/tasks/new", class: "btn btn-primary" %>
     </div>
   <% end %>
-  <%= paginate @tasks %>
 </div>
