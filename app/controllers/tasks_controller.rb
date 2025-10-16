@@ -32,6 +32,8 @@ class TasksController < ApplicationController
                @tasks.order(created_at: :desc)
              end
     @tasks = @tasks.page(params[:page]).per(5)
+    @tasks = Task.all.order(:deadline)
+    @tasks_by_date = @tasks.group_by { |task| task.deadline }
   end
 
   def show
