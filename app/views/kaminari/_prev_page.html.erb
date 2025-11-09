@@ -6,6 +6,11 @@
     per_page:      number of items to fetch per page
     remote:        data-remote
 -%>
-<li class="prev_page">
-  <%= link_to_unless current_page.first?, 'Back', url, rel: 'prev', remote: remote, aria: { label: 'Previous page' } %>
-</li>
+<% if current_page.first? %>
+  <span class="prev_page disabled" aria-disabled="true">Back</span>
+  </li>
+<% else %>
+  <span class="prev_page">
+    <%= link_to 'Back', url, rel: 'prev', remote: remote, aria: { label: 'Previous page' } %>
+  </span>
+<% end %>

@@ -6,6 +6,9 @@ Rails.application.routes.draw do
       get :toggle_status
       get :confirm_delete
     end
+    collection do
+      get :filter_modal
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

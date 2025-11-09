@@ -115,6 +115,11 @@ class TasksController < ApplicationController
     redirect_to tasks_path
   end
 
+  def filter_modal
+    @tasks = Task.all
+    render partial: 'filter_modal'
+  end
+
   private
 
   def task_params
