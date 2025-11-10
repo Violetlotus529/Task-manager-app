@@ -40,72 +40,10 @@
   <div class="actions-bar">
     <%= link_to "新しいタスクを作成", "/tasks/new", class: "btn btn-primary" %>
   </div>
-
-  <% if @tasks.any? %>
-    <div class="tasks-list">
-      <% @tasks.each do |task| %>
-        <%
-          today = Date.current
-          is_overdue = task.deadline && task.deadline < today
-          is_due_today = task.deadline && task.deadline == today
-        %>
-        <div class="task-index-item <%= 'overdue' if is_overdue %> <%= 'due-today' if is_due_today %> <%= 'completed' if task.completed? %>">
-          <div class="task-title">
-            <%= link_to task.title, "/tasks/#{task.id}" %>
-          </div>
-          <div class="task-content">
-            <%= task.content %>
-          </div>
-          <% if task.deadline %>
-            <div class="task-deadline">
-              期限: <%= task.deadline.strftime('%Y年%m月%d日') %>
-            </div>
-          <% end %>
-          <div class="task-status">
-            <% case task.status %>
-            <% when 'not_started' %>
-              📋 未着手
-            <% when 'in_progress' %>
-              🔄 進行中
-            <% when 'completed' %>
-              ✅ 完了
-            <% end %>
-          </div>
-          <div class="task-priority">
-            <% case task.priority %>
-            <% when 'high' %>
-              🔴 高優先度
-            <% when 'medium' %>
-              🟡 中優先度
-            <% when 'low' %>
-              🟢 低優先度
-            <% end %>
-          </div>
-          <div class="task-actions">
-            <%= link_to "表示", "/tasks/#{task.id}", class: "btn btn-outline" %>
-            <%= link_to "編集", "/tasks/#{task.id}/edit", class: "btn btn-secondary" %>
-            <%= link_to case task.status
-                        when 'not_started' then "進行中にする"
-                        when 'in_progress' then "未完了にする"
-                        when 'completed' then "未着手に戻す"
-                        end,
-                 toggle_status_task_path(task),
-                 class: "btn #{case task.status
-                               when 'not_started' then 'btn-primary'
-                               when 'in_progress' then 'btn-success'
-                               when 'completed' then 'btn-warning'
-                               end}" %>
-      <%= link_to "削除 <i class='fa-solid fa-trash'></i>".html_safe, confirm_delete_task_path(task), class: "btn btn-danger" %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  <% else %>
     <div class="empty-state">
       <p>まだタスクがありません。</p>
       <%= link_to "最初のタスクを作成", "/tasks/new", class: "btn btn-primary" %>
     </div>
-  <% end %>
   <div class="filter-pagination">
     <%= paginate @tasks %>
   </div>

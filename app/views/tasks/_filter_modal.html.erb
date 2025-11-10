@@ -1,31 +1,6 @@
-<div class="modal-overlay">
-  <div class="modal-content">
-    <h2>Filter</h2>
-
-  <div id="filter-model" class="modal">
-    <div class="modal-content">
-      <h3>Filter</h3>
-      <div class="filter-grid">
-        <button>全て</button>
-        <button>今日</button>
-        <button>今週</button>
-        <button>期限切れ</button>
-        <button>高</button>
-        <button>中</button>
-        <button>低</button>
-        <button>未着手</button>
-        <button>進行中</button>
-        <button>完了</button>
-        <button>作成順</button>
-        <button>期限順</button>
-        <button>優先度順</button>
-      </div>
-
-      <div class="actions">
-        <a href="#" class="clear-btn">クリア</a>
-        <a href="#" class="apply-btn">適用</a>
-      </div>
-
-      <a href="#" class="close">×</a>
-    </div>
+<div id="filter-modal" role="dialog" aria-modal="true" class="modal hidden">
+  <div class="modal-dialog">
+    <button class="modal-close" aria-label="閉じる">×</button>
+    <%= render 'tasks/filter_buttons' %>
   </div>
+</div>

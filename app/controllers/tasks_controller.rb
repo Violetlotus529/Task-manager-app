@@ -2,39 +2,7 @@
 
 class TasksController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:toggle_completed]
-  def index
-    @tasks = Task.all
-    if params[:search].present?
-      search_term = "%#{params[:search]}%"
-      @tasks = @tasks.where(
-        'title LIKE ? OR content LIKE ?',
-        search_term, search_term
-      )
-    end
-    case params[:filter]
-    when 'today'
-      @tasks = @tasks.where(deadline: Date.current)
-    when 'this_week'
-      start_date = Date.current.beginning_of_week
-      end_date = Date.current.end_of_week
-      @tasks = @tasks.where(deadline: start_date..end_date)
-    when 'overdue'
-      @tasks = @tasks.where('deadline < ?', Date.current)
-    end
-    @tasks = @tasks.where(status: params[:status]) if params[:status].present?
-    @tasks = @tasks.where(priority: params[:priority]) if params[:priority].present?
-    @tasks = case params[:sort]
-             when 'deadline'
-               @tasks.order(:deadline)
-             when 'priority'
-               @tasks.order(priority: :desc)
-             else
-               @tasks.order(created_at: :desc)
-             end
-    @tasks = @tasks.page(params[:page]).per(5)
-    @tasks_by_date = @tasks.group_by { |task| task.deadline }
-  end
-
+  before_action :prepare_listing_tasks, only: %i[index filter]
   def show
     @task = Task.find(params[:id])
   rescue ActiveRecord::RecordNotFound
@@ -120,7 +88,69 @@ class TasksController < ApplicationController
     render partial: 'filter_modal'
   end
 
+  def filter
+    @tasks = Task.all
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @tasks = @tasks.where('title LIKE ? OR content LIKE ?', search_term, search_term)
+    end
+    case params[:filter]
+    when 'today'
+      @tasks = @tasks.where(deadline: Date.current)
+    when 'this_week'
+      start_date = Date.current.beginning_of_week
+      end_date = Date.current.end_of_week
+      @tasks = @tasks.where(deadline: start_date..end_date)
+    when 'overdue'
+      @tasks = @tasks.where('deadline < ?', Date.current)
+    end
+    @tasks = @tasks.where(status: params[:status]) if params[:status].present?
+    @tasks = @tasks.where(priority: params[:priority]) if params[:priority].present?
+    @tasks = case params[:sort]
+             when 'deadline'
+               @tasks.order(:deadline)
+             when 'priority'
+               @tasks.order(priority: :desc)
+             else
+               @tasks.order(created_at: :desc)
+             end
+    @tasks = @tasks.page(params[:page]).per(5)
+    @tasks_by_date = @tasks.group_by { |task| task.deadline }
+    render :index
+  end
+
   private
+
+  def prepare_listing_tasks
+    @tasks = Task.all
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @tasks = @tasks.where('title LIKE ? OR content LIKE ?', search_term, search_term)
+    end
+
+    case params[:filter]
+    when 'today'
+      @tasks = @tasks.where(deadline: Date.current)
+    when 'this_week'
+      start_date = Date.current.beginning_of_week
+      end_date = Date.current.end_of_week
+      @tasks = @tasks.where(deadline: start_date..end_date)
+    when 'overdue'
+      @tasks = @tasks.where('deadline < ?', Date.current)
+    end
+
+    @tasks = @tasks.where(status: params[:status]) if params[:status].present?
+    @tasks = @tasks.where(priority: params[:priority]) if params[:priority].present?
+
+    @tasks = case params[:sort]
+             when 'deadline' then @tasks.order(:deadline)
+             when 'priority' then @tasks.order(priority: :desc)
+             else @tasks.order(created_at: :desc)
+             end
+
+    @tasks = @tasks.page(params[:page]).per(5)
+    @tasks_by_date = @tasks.group_by { |task| task.deadline }
+  end
 
   def task_params
     params.require(:task).permit(:title, :content, :deadline, :status, :priority)
