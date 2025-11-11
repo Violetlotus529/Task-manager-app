@@ -1,10 +1,6 @@
-<div class="modal-overlay">
-  <div class="modal-content">
-    <h2>Filter</h2>
-
 <% base_params = params.permit(:search, :page, :sort, :filter, :status, :priority).to_h %>
 
-  <div id="filter-model" class="modal">
+  <div id="filter-modal" class="modal">
     <div class="modal-content">
       <h3>Filter</h3>
       <div class="filter-grid">
@@ -28,6 +24,6 @@
         <a href="#" class="apply-btn">適用</a>
       </div>
 
-      <a href="#" class="close">×</a>
+      <button type="button" class="close" aria-label="閉じる">×</button>
     </div>
   </div>

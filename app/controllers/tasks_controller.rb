@@ -3,6 +3,12 @@
 class TasksController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:toggle_completed]
   before_action :prepare_listing_tasks, only: %i[index filter]
+
+  def filter_modal
+    @tasks = Task.all
+    render partial: 'filter_modal'
+  end
+
   def show
     @task = Task.find(params[:id])
   rescue ActiveRecord::RecordNotFound
@@ -81,11 +87,6 @@ class TasksController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = 'タスクが見つかりません'
     redirect_to tasks_path
-  end
-
-  def filter_modal
-    @tasks = Task.all
-    render partial: 'filter_modal'
   end
 
   def filter

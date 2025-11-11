@@ -22,29 +22,36 @@
       </p>
     <% end %>
   </div>
-  <div class="filter-buttons">
-    <%= link_to "全て", tasks_path({search: params[:search], page: params[:page], sort: params[:sort] }.compact), class: "btn #{'active' if params[:filter].blank?}" %>
-    <%= link_to "今日", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: 'today' }.compact), class: "btn #{'active' if params[:filter] == 'today'}" %>
-    <%= link_to "今週", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: 'this_week' }.compact), class: "btn #{'active' if params[:filter] == 'this_week'}" %>
-    <%= link_to "期限切れ", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: 'overdue' }.compact), class: "btn btn-danger #{'active' if params[:filter] == 'overdue'}" %>
-    <%= link_to "未着手", tasks_path({search: params[:search], priority: params[:priority], filter: params[:filter], status: 'not_started' }.compact), class: "btn btn-secondary #{'active' if params[:status] == 'not_started'}" %>
-    <%= link_to "進行中", tasks_path({search: params[:search], priority: params[:priority], filter: params[:filter], status: 'in_progress'}.compact), class: "btn btn-warning #{'active' if params[:status] == 'in_progress'}" %>
-    <%= link_to "完了", tasks_path({search: params[:search], priority: params[:priority], filter: params[:filter], status: 'completed'}.compact), class: "btn btn-success #{'active' if params[:status] == 'completed'}" %>
-    <%= link_to "高", tasks_path({search: params[:search], status: params[:status], filter: params[:filter], page: params[:page], sort: params[:sort], priority: 'high'}.compact), class: "btn btn-danger #{'active' if params[:priority] == 'high'}" %>
-    <%= link_to "中", tasks_path({search: params[:search], status: params[:status], filter: params[:filter], page: params[:page], sort: params[:sort], priority: 'medium'}.compact), class: "btn btn-warning #{'active' if params[:priority] == 'medium'}" %>
-    <%= link_to "低", tasks_path({search: params[:search], status: params[:status], filter: params[:filter], page: params[:page], sort: params[:sort], priority: 'low'}.compact), class: "btn btn-secondary #{'active' if params[:priority] == 'low'}" %>
-    <%= link_to "作成順", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: params[:filter], page: params[:page], sort: 'created_at' }.compact), class: "btn btn-secondary #{'active' if params[:sort].blank? || params[:sort] == 'created_at'}" %>
-    <%= link_to "期限順", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: params[:filter], page: params[:page], sort: 'deadline' }.compact), class: "btn btn-warning #{'active' if params[:sort] == 'deadline'}" %>
-    <%= link_to "優先度順", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: params[:filter], page: params[:page], sort: 'priority' }.compact), class: "btn btn-success #{'active' if params[:sort] == 'priority'}" %>
-  </div>
+
   <div class="actions-bar">
     <%= link_to "新しいタスクを作成", "/tasks/new", class: "btn btn-primary" %>
   </div>
+
+  <% if @tasks.any? %>
+    <% @tasks_by_date.each do |date, tasks| %>
+      <div class="task-group">
+        <h2><%= date.present? ? l(date.to_date, format: :long) : '期限未設定' %></h2>
+        <ul class="task-list">
+          <% tasks.each do |task| %>
+            <li class="task-item">
+              <%= link_to task.title, task_path(task), class: "task-title" %>
+              <div class="task-meta">
+                <span class="task-deadline"><%= task.deadline&.to_date %></span>
+                <span class="task-status"><%= task.status %></span>
+                <span class="task-priority"><%= task.priority %></span>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+      <div class="filter-pagination">
+       <%= paginate @tasks, params: request.query_parameters.except(:page) %>
+      </div>
+    <% else %>
     <div class="empty-state">
       <p>まだタスクがありません。</p>
       <%= link_to "最初のタスクを作成", "/tasks/new", class: "btn btn-primary" %>
     </div>
-  <div class="filter-pagination">
-    <%= paginate @tasks %>
-  </div>
+    <% end %>
 </div>
