@@ -1,6 +1,10 @@
-<div id="filter-modal" role="dialog" aria-modal="true" class="modal hidden">
-  <div class="modal-dialog">
-    <button class="modal-close" aria-label="閉じる">×</button>
-    <%= render 'tasks/filter_buttons' %>
+<div id="filter-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="filter-modal-title">
+  <a class="modal-overlay" href="#" aria-hidden="true"></a>
+  <div class="modal-dialog" role="document">
+    <h2 id="filter-modal-title" class="sr-only">タスクのフィルタ</h2>
+    <%= link_to '×', tasks_path, class: 'modal-close', aria: { label: '閉じる' } %>
+    <div class="modal-body">
+      <%= render 'tasks/filter_buttons' %>
+    </div>
   </div>
 </div>

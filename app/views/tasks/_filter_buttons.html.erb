@@ -20,10 +20,12 @@
       </div>
 
       <div class="actions">
-        <a href="#" class="clear-btn">クリア</a>
-        <a href="#" class="apply-btn">適用</a>
+        <%= link_to 'クリア', tasks_path, class: 'clear-btn btn btn-secondary' %>
+        <%= form_with url: tasks_path, method: :get, local: true do %>
+          <%= hidden_field_tag :status, params[:status] %>
+          <%= hidden_field_tag :priority, params[:priority] %>
+          <%= submit_tag '適用', class: 'btn btn-primary' %>
+        <% end %>
       </div>
-
-      <button type="button" class="close" aria-label="閉じる">×</button>
     </div>
   </div>
