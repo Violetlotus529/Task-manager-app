@@ -9,6 +9,13 @@ class TasksController < ApplicationController
     render partial: 'filter_modal'
   end
 
+  def index
+    respond_to do |format|
+      format.html
+      format.json { render json: @tasks }
+    end
+  end
+
   def show
     @task = Task.find(params[:id])
   rescue ActiveRecord::RecordNotFound
@@ -90,33 +97,6 @@ class TasksController < ApplicationController
   end
 
   def filter
-    @tasks = Task.all
-    if params[:search].present?
-      search_term = "%#{params[:search]}%"
-      @tasks = @tasks.where('title LIKE ? OR content LIKE ?', search_term, search_term)
-    end
-    case params[:filter]
-    when 'today'
-      @tasks = @tasks.where(deadline: Date.current)
-    when 'this_week'
-      start_date = Date.current.beginning_of_week
-      end_date = Date.current.end_of_week
-      @tasks = @tasks.where(deadline: start_date..end_date)
-    when 'overdue'
-      @tasks = @tasks.where('deadline < ?', Date.current)
-    end
-    @tasks = @tasks.where(status: params[:status]) if params[:status].present?
-    @tasks = @tasks.where(priority: params[:priority]) if params[:priority].present?
-    @tasks = case params[:sort]
-             when 'deadline'
-               @tasks.order(:deadline)
-             when 'priority'
-               @tasks.order(priority: :desc)
-             else
-               @tasks.order(created_at: :desc)
-             end
-    @tasks = @tasks.page(params[:page]).per(5)
-    @tasks_by_date = @tasks.group_by { |task| task.deadline }
     render :index
   end
 
@@ -129,28 +109,47 @@ class TasksController < ApplicationController
       @tasks = @tasks.where('title LIKE ? OR content LIKE ?', search_term, search_term)
     end
 
-    case params[:filter]
-    when 'today'
-      @tasks = @tasks.where(deadline: Date.current)
-    when 'this_week'
-      start_date = Date.current.beginning_of_week
-      end_date = Date.current.end_of_week
-      @tasks = @tasks.where(deadline: start_date..end_date)
-    when 'overdue'
-      @tasks = @tasks.where('deadline < ?', Date.current)
+    mode = params.dig(:filter, :mode)
+    all_mode = (mode == 'all')
+
+    unless all_mode
+
+      period = params.dig(:filter, :period) || params[:period]
+      case period
+      when 'today' then @tasks = @tasks.where(deadline: Date.current)
+      when 'this_week'
+        start_date = Date.current.beginning_of_week
+        end_date = Date.current.end_of_week
+        @tasks = @tasks.where(deadline: start_date..end_date)
+      when 'overdue' then @tasks = @tasks.where('deadline < ?', Date.current)
+      end
+
+      statuses = params[:status] || params.dig(:filter, :status) || []
+      @tasks = @tasks.where(status: statuses) if statuses.any?
+
+      priority = params.dig(:filter, :priority) || params[:priority]
+      @tasks = @tasks.where(priority: priority) if priority.present?
     end
-
-    @tasks = @tasks.where(status: params[:status]) if params[:status].present?
-    @tasks = @tasks.where(priority: params[:priority]) if params[:priority].present?
-
-    @tasks = case params[:sort]
+    sort = params[:sort] || params.dig(:filter, :sort)
+    @tasks = case sort
              when 'deadline' then @tasks.order(:deadline)
              when 'priority' then @tasks.order(priority: :desc)
              else @tasks.order(created_at: :desc)
              end
-
+    group_key = params[:group_by] || (params[:sort] || params.dig(:filter, :sort))
     @tasks = @tasks.page(params[:page]).per(5)
-    @tasks_by_date = @tasks.group_by { |task| task.deadline }
+    @tasks_by_group = case group_key
+                      when 'deadline'
+                        @tasks.group_by { |t| t.deadline&.to_date }
+                      when 'created_at'
+                        @tasks.group_by { |t| t.created_at&.to_date }
+                      when 'priority'
+                        @tasks.group_by { |t| t.priority }
+                      when 'status'
+                        @tasks.group_by { |t| t.status }
+                      else
+                        nil
+                      end
   end
 
   def task_params

@@ -3,29 +3,54 @@
   <div id="filter-modal" class="modal">
     <div class="modal-content">
       <h3>Filter</h3>
-      <div class="filter-grid">
-        <%= link_to "全て", tasks_path({search: params[:search], page: params[:page], sort: params[:sort] }.compact), class: "btn #{'active' if params[:filter].blank?}" %>
-        <%= link_to "今日", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: 'today' }.compact), class: "btn #{'active' if params[:filter] == 'today'}" %>
-        <%= link_to "今週", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: 'this_week' }.compact), class: "btn #{'active' if params[:filter] == 'this_week'}" %>
-        <%= link_to "期限切れ", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: 'overdue' }.compact), class: "btn btn-danger #{'active' if params[:filter] == 'overdue'}" %>
-        <%= link_to "未着手", tasks_path({search: params[:search], priority: params[:priority], filter: params[:filter], status: 'not_started' }.compact), class: "btn btn-secondary #{'active' if params[:status] == 'not_started'}" %>
-        <%= link_to "進行中", tasks_path({search: params[:search], priority: params[:priority], filter: params[:filter], status: 'in_progress'}.compact), class: "btn btn-warning #{'active' if params[:status] == 'in_progress'}" %>
-        <%= link_to "完了", tasks_path({search: params[:search], priority: params[:priority], filter: params[:filter], status: 'completed'}.compact), class: "btn btn-success #{'active' if params[:status] == 'completed'}" %>
-        <%= link_to "高", tasks_path({search: params[:search], status: params[:status], filter: params[:filter], page: params[:page], sort: params[:sort], priority: 'high'}.compact), class: "btn btn-danger #{'active' if params[:priority] == 'high'}" %>
-        <%= link_to "中", tasks_path({search: params[:search], status: params[:status], filter: params[:filter], page: params[:page], sort: params[:sort], priority: 'medium'}.compact), class: "btn btn-warning #{'active' if params[:priority] == 'medium'}" %>
-        <%= link_to "低", tasks_path({search: params[:search], status: params[:status], filter: params[:filter], page: params[:page], sort: params[:sort], priority: 'low'}.compact), class: "btn btn-secondary #{'active' if params[:priority] == 'low'}" %>
-        <%= link_to "作成順", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: params[:filter], page: params[:page], sort: 'created_at' }.compact), class: "btn btn-secondary #{'active' if params[:sort].blank? || params[:sort] == 'created_at'}" %>
-        <%= link_to "期限順", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: params[:filter], page: params[:page], sort: 'deadline' }.compact), class: "btn btn-warning #{'active' if params[:sort] == 'deadline'}" %>
-        <%= link_to "優先度順", tasks_path({search: params[:search], status: params[:status], priority: params[:priority], filter: params[:filter], page: params[:page], sort: 'priority' }.compact), class: "btn btn-success #{'active' if params[:sort] == 'priority'}" %>
       </div>
-
-      <div class="actions">
-        <%= link_to 'クリア', tasks_path, class: 'clear-btn btn btn-secondary' %>
+      <div>
         <%= form_with url: tasks_path, method: :get, local: true do %>
-          <%= hidden_field_tag :status, params[:status] %>
-          <%= hidden_field_tag :priority, params[:priority] %>
-          <%= submit_tag '適用', class: 'btn btn-primary' %>
-        <% end %>
+            <div class="filter-buttons">
+              <%= check_box_tag 'filter[mode]', 'all', params.dig(:filter, :mode) == 'all', id: 'filter_mode_all' %>
+              <%= label_tag 'filter_mode_all', '全て', class: 'toggle-btn btn' %>
+              <span class="muted-none">
+            </div>
+            <fieldset <%= 'disabled' if @all_mode %> aria-disabled="<%= @all_mode %>">
+              <div class="filter-buttons">
+                <%= radio_button_tag 'filter[period]', 'today', params.dig(:filter, :period) == 'today', id: 'filter_today', class: 'hidden-checkbox', disabled: @all_mode %>
+                <%= label_tag 'filter_today', '今日', class: 'toggle-btn btn' %>
+                <%= radio_button_tag 'filter[period]', 'this_week', params.dig(:filter, :period) == 'this_week', id: 'filter_this_week', class: 'hidden-checkbox', disabled: @all_mode %>
+                <%= label_tag 'filter_this_week', '今週', class: 'toggle-btn btn' %>
+                <%= radio_button_tag 'filter[period]', 'overdue', params.dig(:filter, :period) == 'overdue', id: 'filter_overdue', class: 'hidden-checkbox', disabled: @all_mode %>
+                <%= label_tag 'filter_overdue', '期限切れ', class: 'toggle-btn btn' %>
+              </div>
+              <div class="filter-buttons">
+                <%= radio_button_tag 'filter[priority]', 'high', params.dig(:filter, :priority) == 'high', id: 'priority_high', class: 'hidden-checkbox', disabled: @all_mode %>
+                <%= label_tag 'priority_high', '高', class: 'toggle-btn btn' %>
+                <%= radio_button_tag 'filter[priority]', 'medium', params.dig(:filter, :priority) == 'medium', id: 'priority_medium', class: 'hidden-checkbox', disabled: @all_mode %>
+                <%= label_tag 'priority_medium', '中', class: 'toggle-btn btn' %>
+                <%= radio_button_tag 'filter[priority]', 'low', params.dig(:filter, :priority) == 'low', id: 'priority_low', class: 'hidden-checkbox', disabled: @all_mode %>
+                <%= label_tag 'priority_low', '低', class: 'toggle-btn btn' %>
+              </div>
+              <div class="filter-buttons">
+                <%= check_box_tag 'filter[status][]', 'not_started', Array(params.dig(:filter, :status)).include?('not_started'), id: 'status_not_started', class: 'hidden-checkbox', disabled: @all_mode %>
+                <%= label_tag 'status_not_started', '未着手', class: "toggle-btn btn btn-secondary" %>
+                <%= check_box_tag 'filter[status][]', 'in_progress', Array(params.dig(:filter, :status)).include?('in_progress'), id: 'status_in_progress', class: 'hidden-checkbox', disabled: @all_mode %>
+                <%= label_tag 'status_in_progress', '進行中', class: "toggle-btn btn btn-warning" %>
+                <%= check_box_tag 'filter[status][]', 'completed', Array(params.dig(:filter, :status)).include?('completed'), id: 'status_completed', class: 'hidden-checkbox', disabled: @all_mode %>
+                <%= label_tag 'status_completed', '完了', class: "toggle-btn btn btn-success" %>
+              </div>
+            </fieldset>
+            <div class="filter-buttons">
+              <%= radio_button_tag 'filter[sort]', 'created_at', params.dig(:filter, :sort) == 'created_at', id: 'sort_created_at', class: 'hidden-checkbox' %>
+              <%= label_tag 'sort_created_at', '作成順', class: 'toggle-btn btn' %>
+              <%= radio_button_tag 'filter[sort]', 'deadline', params.dig(:filter, :sort) == 'deadline', id: 'sort_deadline', class: 'hidden-checkbox' %>
+              <%= label_tag 'sort_deadline', '期限順', class: 'toggle-btn btn' %>
+              <%= radio_button_tag 'filter[sort]', 'priority', params.dig(:filter, :sort) == 'priority', id: 'sort_priority', class: 'hidden-checkbox' %>
+              <%= label_tag 'sort_priority', '優先度順', class: 'toggle-btn btn' %>
+            </div>
+        </div>
+        <div class="actions">
+          <%= button_tag 'クリア', type: 'reset', class: 'clear-btn btn btn-secondary' %>
+          <%= submit_tag '適用', class: 'apply-btn btn btn-primary' %>
+        </div>
+      <% end %>
       </div>
     </div>
   </div>

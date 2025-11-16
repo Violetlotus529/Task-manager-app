@@ -27,12 +27,42 @@
   </div>
 
   <% if @tasks.any? %>
-    <% @tasks_by_date.each do |date, tasks| %>
-      <div class="task-group">
-        <h2><%= date.present? ? l(date.to_date, format: :long) : '期限未設定' %></h2>
+    <% group_key = params[:group_by] || (params[:sort] || params.dig(:filter, :sort)) %>
+    <% if @tasks_by_group.present? %>
+      <% @tasks_by_group.each do |group_value, tasks| %>
+        <div class="task-group">
+          <h2>
+            <% if group_key == 'priority' %>
+              優先度: <%= group_value || '未設定' %>
+            <% elsif group_key == 'status' %>
+              ステータス: <%= group_value || '未設定' %>
+            <% elsif group_key == 'created_at' %>
+              作成日: <%= group_value.present? ? l(group_value, format: :long) : '未設定' %>
+            <% else %>
+              <%= group_value.present? ? l(group_value, format: :long) : '期限未設定' %>
+            <% end %>
+          </h2>
+          <ul class="task-list">
+            <% tasks.each do |task| %>
+              <li class="task-item">
+                <%= link_to task.title, task_path(task), class: "task-title" %>
+                <div class="task-meta">
+                  <span class="task-deadline"><%= task.deadline&.to_date %></span>
+                  <span class="task-status"><%= task.status %></span>
+                  <span class="task-priority"><%= task.priority %></span>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div class="filter-pagination">
+        <%= paginate @tasks, params: request.query_parameters.except(:page) %>
+      </div>
+      <% else %>
         <ul class="task-list">
-          <% tasks.each do |task| %>
-            <li class="task-item">
+          <% @tasks.each do |task| %>
+            <li class="task-list">
               <%= link_to task.title, task_path(task), class: "task-title" %>
               <div class="task-meta">
                 <span class="task-deadline"><%= task.deadline&.to_date %></span>
@@ -42,14 +72,13 @@
             </li>
           <% end %>
         </ul>
-      </div>
-    <% end %>
-      <div class="filter-pagination">
-       <%= paginate @tasks, params: request.query_parameters.except(:page) %>
-      </div>
+        <div class="filter-pagination">
+         <%= paginate @tasks, params: request.query_parameters.except(:page) %>
+        </div>
+      <% end %>
     <% else %>
-    <div class="empty-state">
-      <p>まだタスクがありません。</p>
-    </div>
+      <div class="empty-state">
+        <p>まだタスクがありません。</p>
+      </div>
     <% end %>
 </div>

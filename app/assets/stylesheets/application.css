@@ -176,6 +176,12 @@ li {
   transform: translateY(-1px);
 }
 
+fieldset[disabled] .toggle-btn {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: default;
+}
+
 .form-actions {
   margin-top: 30px;
   text-align: center;
