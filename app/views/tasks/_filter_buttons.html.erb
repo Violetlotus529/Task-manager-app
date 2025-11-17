@@ -6,12 +6,10 @@
       </div>
       <div>
         <%= form_with url: tasks_path, method: :get, local: true do %>
-            <div class="filter-buttons">
-              <%= check_box_tag 'filter[mode]', 'all', params.dig(:filter, :mode) == 'all', id: 'filter_mode_all' %>
-              <%= label_tag 'filter_mode_all', '全て', class: 'toggle-btn btn' %>
-              <span class="muted-none">
-            </div>
-            <fieldset <%= 'disabled' if @all_mode %> aria-disabled="<%= @all_mode %>">
+          <div data-controller="filter">
+            <%= check_box_tag 'filter[mode]', 'all', params.dig(:filter, :mode) == 'all', id: 'filter_mode_all',
+            data: { filter_target: "allMode", action: "change->filter#toggle" } %>
+            <fieldset data-filter-target="fieldset" <%= 'disabled' if @all_mode %> aria-disabled="<%= @all_mode %>">
               <div class="filter-buttons">
                 <%= radio_button_tag 'filter[period]', 'today', params.dig(:filter, :period) == 'today', id: 'filter_today', class: 'hidden-checkbox', disabled: @all_mode %>
                 <%= label_tag 'filter_today', '今日', class: 'toggle-btn btn' %>
@@ -45,6 +43,7 @@
               <%= radio_button_tag 'filter[sort]', 'priority', params.dig(:filter, :sort) == 'priority', id: 'sort_priority', class: 'hidden-checkbox' %>
               <%= label_tag 'sort_priority', '優先度順', class: 'toggle-btn btn' %>
             </div>
+          </div>
         </div>
         <div class="actions">
           <%= button_tag 'クリア', type: 'reset', class: 'clear-btn btn btn-secondary' %>
