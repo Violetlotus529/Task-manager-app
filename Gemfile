@@ -73,3 +73,7 @@ group :test do
   # gem 'capybara'        # 学習段階では不要
   # gem 'selenium-webdriver'  # 学習段階では不要
 end
+
+gem "importmap-rails", "~> 2.2"
+gem "turbo-rails", "~> 2.0"
+gem "stimulus-rails", "~> 1.3"

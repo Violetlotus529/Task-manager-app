@@ -50,6 +50,21 @@
           <%= submit_tag '適用', class: 'apply-btn btn btn-primary' %>
         </div>
       <% end %>
+      <script>
+        (function() {
+          function attachFilterFallback() {
+            const cb = document.getElementById('filter_mode_all');
+            const fieldset = document.querySelector('[data-filter-target="fieldset"]');
+            if (!cb) return;
+            const handler = () => { if (fieldset) fieldset.disabled = !!cb.checked; };
+            try { cb.removeEventListener('change', handler); } catch (e) {}
+            cb.addEventListener('change', handler);
+            handler();
+          }
+          attachFilterFallback();
+          setTimeout(attachFilterFallback, 50);
+        })();
+      </script>
       </div>
     </div>
   </div>
