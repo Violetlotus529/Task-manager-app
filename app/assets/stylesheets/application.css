@@ -232,6 +232,36 @@ fieldset[disabled] .toggle-btn {
   font-size: 14px;
 }
 
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.task-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.task-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.inline-delete-form {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
 .pagination {
   display: flex;
   justify-content: center;

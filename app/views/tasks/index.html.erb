@@ -51,6 +51,22 @@
                   <span class="task-status"><%= task.status %></span>
                   <span class="task-priority"><%= task.priority %></span>
                 </div>
+
+                <div class="task-actions">
+                  <%= link_to "表示", task_path(task), 
+                      class: "btn btn-outline btn-sm", 
+                      aria: { label: "表示 #{task.title}" } %>
+                  
+                  <%= link_to "編集", task_path(task),
+                      class: "btn btn-primary btn-sm",
+                      aria: { label: "編集 #{task.title}" } %>
+                  
+                  <%= button_to "削除", task_path(task),
+                      method: :delete,
+                      data: { turbo_confirm: "本当に削除しますか？", confirm: "本当に削除しますか？" },
+                      form: { class: "inline-delete-form" },
+                      class: "btn btn-danger btn-sm" %>
+                </div>
               </li>
             <% end %>
           </ul>
@@ -62,12 +78,30 @@
       <% else %>
         <ul class="task-list">
           <% @tasks.each do |task| %>
-            <li class="task-list">
-              <%= link_to task.title, task_path(task), class: "task-title" %>
-              <div class="task-meta">
-                <span class="task-deadline"><%= task.deadline&.to_date %></span>
-                <span class="task-status"><%= task.status %></span>
-                <span class="task-priority"><%= task.priority %></span>
+            <li class="task-item">
+              <div class="task-left">
+                <%= link_to task.title, task_path(task), class: "task-title" %>
+                <div class="task-meta">
+                  <span class="task-deadline"><%= task.deadline&.to_date %></span>
+                  <span class="task-status"><%= task.status %></span>
+                  <span class="task-priority"><%= task.priority %></span>
+                </div>
+              </div>
+
+              <div class="task-actions">
+                <%= link_to "表示", task_path(task),
+                    class: "btn btn-outline btn-sm",
+                    aria: { label: "表示 #{task.title}" } %>
+
+                <%= link_to "編集", edit_task_path(task),
+                    class: "btn btn-primary btn-sm",
+                    aria: { label: "編集 #{task.title}" } %>
+
+                <%= button_to "削除", task_path(task),
+                    method: :delete,
+                    data: { turbo_confirm: "本当に削除しますか？", confirm: "本当に削除しますか？" },
+                    form: { class: "inline-delete-form" },
+                    class: "btn btn-danger btn-sm" %>
               </div>
             </li>
           <% end %>
