@@ -1,13 +1,13 @@
 <h1>Tasks#new</h1>
 <p>Find me in app/views/tasks/new.html.erb</p>
 <div class="form-container">
-   <h1>新しいタスクを作成</h1>
+   <h1>New Task</h1>
 
    <%= form_tag("/tasks", method: :post, class: "form") do %>
      <div class="form-group">
         <% if defined?(@task) && @task&.errors&.any? %>
           <div class="error-message">
-             <h3><%= @task.errors.count %>件のエラーがあります:</h3>
+             <h3>There is<%= @task.errors.count %>error:</h3>
              <ul>
                 <% if defined?(@task) && @task&.errors&.any? %>
                   <% @task.errors.full_messages.each do |message| %>
@@ -20,44 +20,44 @@
 
 
 
-       <label for="title">タイトル:</label>
+       <label for="title">Title:</label>
        <input type="text" name="task[title]" value="<%= @task&.title %>" class="form-input" required>
      </div>
 
      <div class="form-group">
-       <label for="content">内容</label>
+       <label for="content">Content:</label>
        <textarea name="task[content]" class="form-textarea" rows="5"><%= @task&.content %></textarea>
      </div>
 
      <div class="form-group">
-       <label for="deadline">期限:</label>
+       <label for="deadline">Deadline:</label>
        <input type="date" name="task[deadline]" value="<%= @task.deadline&.strftime('%Y-%m-%d') %>" class="form-input">
      </div>
 
      <div class="form-group">
-      <%= label_tag "task[priority]", "優先度:" %>
+      <%= label_tag "task[priority]", "Priority:" %>
       <%= select_tag "task[priority]",
           options_for_select([
-            ['低', 'low'],
-            ['中', 'medium'],
-            ['高', 'high']
+            ['Low'],
+            ['Medium'],
+            ['High']
           ], @task&.priority),
           class: "form-input" %>
      </div>
 
      <div class="form-group">
-       <%= label_tag "task[status]", "進捗状況:" %>
+       <%= label_tag "task[status]", "Status:" %>
        <%= select_tag "task[status]",
            options_for_select([
-            ['未着手', 'not_started'],
-            ['進行中', 'in_progress'],
-            ['完了', 'completed']
+            ['Not_started'],
+            ['In_progress'],
+            ['Completed']
           ], @task&.status),
           class: "form-input" %>
 
      <div class="form-actions">
        <input type="submit" value="Create Task" class="btn btn-primary">
-       <%= link_to "キャンセル", "/tasks", class: "btn btn-secondary" %>
+       <%= link_to "Cancel", "/tasks", class: "btn btn-secondary" %>
      </div>
    <% end %>
 </div>

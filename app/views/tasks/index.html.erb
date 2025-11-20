@@ -6,12 +6,12 @@
   <div class="search-container">
     <%= form_with url: tasks_path, method: :get, local: :true, class: "search-form" do |form| %>
       <%= form.text_field :search,
-          placeholder: "タスクを検索...",
+          placeholder: "Search...",
           value: params[:search],
           class: "search-input" %>
-      <%= form.submit "検索", class: "btn btn-search" %>
+      <%= form.submit "Search", class: "btn btn-search" %>
       <% if params[:search].present? %>
-        <%= link_to "クリア", tasks_path, class: "btn btn-clear" %>
+        <%= link_to "Clear", tasks_path, class: "btn btn-clear" %>
       <% end %>
     <% end %>
 
@@ -23,7 +23,7 @@
   </div>
 
   <div class="actions-bar">
-    <%= link_to "新しいタスクを作成", "/tasks/new", class: "btn btn-primary" %>
+    <%= link_to "+ New task", "/tasks/new", class: "btn btn-primary" %>
   </div>
 
   <% if @tasks.any? %>
@@ -53,19 +53,19 @@
                 </div>
 
                 <div class="task-actions">
-                  <%= link_to "表示", task_path(task), 
-                      class: "btn btn-outline btn-sm", 
-                      aria: { label: "表示 #{task.title}" } %>
+                  <%= link_to task_path(task), class: "btn-action" do %>
+                      <i class="fa-solid fa-eye"></i>
+                  <% end %>
                   
-                  <%= link_to "編集", task_path(task),
-                      class: "btn btn-primary btn-sm",
-                      aria: { label: "編集 #{task.title}" } %>
+                  <%= link_to edit_task_path(task), class: "btn-action" do %>
+                      <i class="fa-solid fa-pen"></i>
+                  <% end %>
                   
-                  <%= button_to "削除", task_path(task),
-                      method: :delete,
-                      data: { turbo_confirm: "本当に削除しますか？", confirm: "本当に削除しますか？" },
-                      form: { class: "inline-delete-form" },
-                      class: "btn btn-danger btn-sm" %>
+                  <%= link_to task_path(task),
+                      data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+                      class: "btn-action delete" do %>
+                      <i class="fa-solid fa-trash"></i>
+                  <% end %>
                 </div>
               </li>
             <% end %>
@@ -89,19 +89,19 @@
               </div>
 
               <div class="task-actions">
-                <%= link_to "表示", task_path(task),
-                    class: "btn btn-outline btn-sm",
-                    aria: { label: "表示 #{task.title}" } %>
+                <%= link_to task_path(task), class: "btn btn-action" do %>
+                    <i class="fa-solid fa-eye"></i>
+                <% end %>
 
-                <%= link_to "編集", edit_task_path(task),
-                    class: "btn btn-primary btn-sm",
-                    aria: { label: "編集 #{task.title}" } %>
+                <%= link_to edit_task_path(task), class: "btn btn-action" do %>
+                    <i class="fa-solid fa-pen"></i>
+                <% end %>
 
-                <%= button_to "削除", task_path(task),
-                    method: :delete,
-                    data: { turbo_confirm: "本当に削除しますか？", confirm: "本当に削除しますか？" },
-                    form: { class: "inline-delete-form" },
-                    class: "btn btn-danger btn-sm" %>
+                <%= link_to task_path(task),
+                    data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+                    class: "btn-action delete" do %>
+                    <i class="fa-solid fa-trash"></i>
+                <% end %>
               </div>
             </li>
           <% end %>

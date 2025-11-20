@@ -8,4 +8,5 @@
         <%= @task.created_at%>
     </div>
     <%= link_to("Edit","/tasks/#{@task.id}/edit") %>
+    <%= link_to "Cancel", tasks_path, class: "back-link" %>
 </div>
