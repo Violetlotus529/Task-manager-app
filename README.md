@@ -101,7 +101,8 @@ erDiagram
     date    deadline
     string  priority
     string  status
-    timestamps
+    datetime created_at
+    datetime update_at
   }
 ```
 Highlights (What I Focused On)
